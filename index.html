@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompAI — Intelligent Compensation Processing</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ======================== SIDEBAR ======================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <span class="brand-ey">EY</span>
+        </div>
+        <span class="brand-name">CompAI</span>
+        <span class="brand-badge">AI-Powered</span>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-screen="dashboard" onclick="switchScreen('dashboard', this)">
+            <i class="fas fa-th-large"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-screen="upload" onclick="switchScreen('upload', this)">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>Upload</span>
+        </a>
+        <a href="#" class="nav-item" data-screen="review" onclick="switchScreen('review', this)">
+            <i class="fas fa-search-plus"></i>
+            <span>Data Review</span>
+            <span class="nav-badge">23</span>
+        </a>
+        <a href="#" class="nav-item" data-screen="missing-info" onclick="switchScreen('missing-info', this)">
+            <i class="fas fa-question-circle"></i>
+            <span>Missing Info</span>
+            <span class="nav-badge warn">7</span>
+        </a>
+        <a href="#" class="nav-item" data-screen="reports" onclick="switchScreen('reports', this)">
+            <i class="fas fa-file-chart-line fa-file-alt"></i>
+            <span>Reports</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-section-label">Administration</div>
+    <nav class="sidebar-nav">
+        <a href="#" class="nav-item" onclick="event.preventDefault()">
+            <i class="fas fa-cogs"></i>
+            <span>Settings</span>
+        </a>
+        <a href="#" class="nav-item" onclick="event.preventDefault()">
+            <i class="fas fa-history"></i>
+            <span>Audit Log</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-user">
+        <div class="user-avatar">JS</div>
+        <div class="user-info">
+            <div class="user-name">Jane Smith</div>
+            <div class="user-role">PAS Manager</div>
+        </div>
+    </div>
+</aside>
+
+<!-- ======================== MAIN CONTENT ======================== -->
+<main class="main-content">
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="top-bar-title" id="page-title">Dashboard</div>
+        <div class="top-bar-actions">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search batches, clients...">
+            </div>
+            <button class="top-btn" title="Notifications" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notif-dot"></span>
+            </button>
+            <button class="top-btn" title="Help">
+                <i class="fas fa-question-circle"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notif-panel">
+        <div class="notif-header">
+            <h3>Notifications</h3>
+            <a href="#">Mark all read</a>
+        </div>
+        <div class="notif-item unread">
+            <div class="notif-icon warn"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="notif-body">
+                <p><strong>SLA Warning:</strong> Batch #1038 missing info unresolved for 20 hours</p>
+                <span class="notif-time">25 min ago</span>
+            </div>
+        </div>
+        <div class="notif-item unread">
+            <div class="notif-icon success"><i class="fas fa-check-circle"></i></div>
+            <div class="notif-body">
+                <p>Batch #1042 (Acme Corp) has been <strong>finalized</strong></p>
+                <span class="notif-time">1 hour ago</span>
+            </div>
+        </div>
+        <div class="notif-item">
+            <div class="notif-icon info"><i class="fas fa-info-circle"></i></div>
+            <div class="notif-body">
+                <p>3 new clarification questions assigned to you</p>
+                <span class="notif-time">2 hours ago</span>
+            </div>
+        </div>
+        <div class="notif-item">
+            <div class="notif-icon info"><i class="fas fa-upload"></i></div>
+            <div class="notif-body">
+                <p>Batch #1043 uploaded by M. Johnson for GlobalTech Inc.</p>
+                <span class="notif-time">3 hours ago</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ====================== SCREEN: DASHBOARD ====================== -->
+    <section class="screen active" id="screen-dashboard">
+
+        <!-- Status Cards -->
+        <div class="status-cards">
+            <div class="status-card" onclick="switchScreen('upload')">
+                <div class="status-icon received"><i class="fas fa-inbox"></i></div>
+                <div class="status-count">5</div>
+                <div class="status-label">Data Received</div>
+                <div class="status-trend up"><i class="fas fa-arrow-up"></i> 2 today</div>
+            </div>
+            <div class="status-card" onclick="switchScreen('review')">
+                <div class="status-icon review"><i class="fas fa-search"></i></div>
+                <div class="status-count">3</div>
+                <div class="status-label">In Review</div>
+                <div class="status-trend neutral"><i class="fas fa-minus"></i> No change</div>
+            </div>
+            <div class="status-card" onclick="switchScreen('missing-info')">
+                <div class="status-icon missing"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="status-count">2</div>
+                <div class="status-label">Missing Info</div>
+                <div class="status-trend down"><i class="fas fa-arrow-down"></i> 1 resolved</div>
+            </div>
+            <div class="status-card">
+                <div class="status-icon ready"><i class="fas fa-check-circle"></i></div>
+                <div class="status-count">8</div>
+                <div class="status-label">Ready for Payroll</div>
+                <div class="status-trend up"><i class="fas fa-arrow-up"></i> 3 today</div>
+            </div>
+            <div class="status-card">
+                <div class="status-icon finalized"><i class="fas fa-lock"></i></div>
+                <div class="status-count">42</div>
+                <div class="status-label">Finalized</div>
+                <div class="status-trend up"><i class="fas fa-arrow-up"></i> 5 this week</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Pending Actions -->
+            <div class="card pending-actions">
+                <div class="card-header">
+                    <h2><i class="fas fa-bolt"></i> My Pending Actions</h2>
+                </div>
+                <div class="card-body">
+                    <div class="action-item" onclick="switchScreen('review')">
+                        <div class="action-icon review"><i class="fas fa-search"></i></div>
+                        <div class="action-text">
+                            <span class="action-count">3</span> batches awaiting your review
+                        </div>
+                        <i class="fas fa-chevron-right action-arrow"></i>
+                    </div>
+                    <div class="action-item" onclick="switchScreen('missing-info')">
+                        <div class="action-icon missing"><i class="fas fa-question-circle"></i></div>
+                        <div class="action-text">
+                            <span class="action-count">7</span> missing info questions assigned to you
+                        </div>
+                        <i class="fas fa-chevron-right action-arrow"></i>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-icon ready"><i class="fas fa-stamp"></i></div>
+                        <div class="action-text">
+                            <span class="action-count">2</span> batches pending your approval
+                        </div>
+                        <i class="fas fa-chevron-right action-arrow"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card activity-feed">
+                <div class="card-header">
+                    <h2><i class="fas fa-stream"></i> Recent Activity</h2>
+                    <a href="#" class="card-link">View All</a>
+                </div>
+                <div class="card-body">
+                    <div class="feed-item">
+                        <div class="feed-time">12:45 PM</div>
+                        <div class="feed-dot finalized"></div>
+                        <div class="feed-text">Batch #1042 <span class="feed-client">(Acme Corp)</span> → <span class="badge badge-finalized">FINALIZED</span></div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-time">11:30 AM</div>
+                        <div class="feed-dot missing"></div>
+                        <div class="feed-text">Batch #1041 — <strong>3 new questions</strong> generated</div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-time">10:15 AM</div>
+                        <div class="feed-dot received"></div>
+                        <div class="feed-text">Batch #1040 uploaded by <strong>J. Smith</strong></div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-time">09:00 AM</div>
+                        <div class="feed-dot sla-warn"></div>
+                        <div class="feed-text"><span class="badge badge-sla">SLA WARNING</span> Batch #1038 missing info &gt; 24hrs</div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-time">08:30 AM</div>
+                        <div class="feed-dot ready"></div>
+                        <div class="feed-text">Batch #1039 <span class="feed-client">(GlobalTech)</span> → <span class="badge badge-ready">READY FOR PAYROLL</span></div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-time">Yesterday</div>
+                        <div class="feed-dot review"></div>
+                        <div class="feed-text">Batch #1037 — Reviewer resolved <strong>12 exceptions</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="card metrics-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-bar"></i> Processing Metrics — March 2026</h2>
+                </div>
+                <div class="card-body">
+                    <div class="metrics-row">
+                        <div class="metric">
+                            <div class="metric-value">42</div>
+                            <div class="metric-label">Batches Processed</div>
+                            <div class="metric-bar"><div class="metric-fill" style="width: 84%"></div></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">2.1 <small>hrs</small></div>
+                            <div class="metric-label">Avg. Cycle Time</div>
+                            <div class="metric-bar"><div class="metric-fill fast" style="width: 25%"></div></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">98.2<small>%</small></div>
+                            <div class="metric-label">Accuracy Rate</div>
+                            <div class="metric-bar"><div class="metric-fill" style="width: 98%"></div></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">16,400</div>
+                            <div class="metric-label">Hours Saved (YTD)</div>
+                            <div class="metric-bar"><div class="metric-fill success" style="width: 82%"></div></div>
+                        </div>
+                    </div>
+                    <!-- Mini Chart -->
+                    <div class="mini-chart">
+                        <div class="chart-label">Daily Volume (Last 14 Days)</div>
+                        <div class="bar-chart">
+                            <div class="bar" style="height: 30%"><span>2</span></div>
+                            <div class="bar" style="height: 50%"><span>4</span></div>
+                            <div class="bar" style="height: 40%"><span>3</span></div>
+                            <div class="bar" style="height: 70%"><span>5</span></div>
+                            <div class="bar" style="height: 60%"><span>4</span></div>
+                            <div class="bar weekend" style="height: 10%"><span>1</span></div>
+                            <div class="bar weekend" style="height: 0%"><span>0</span></div>
+                            <div class="bar" style="height: 45%"><span>3</span></div>
+                            <div class="bar" style="height: 80%"><span>6</span></div>
+                            <div class="bar" style="height: 55%"><span>4</span></div>
+                            <div class="bar" style="height: 90%"><span>7</span></div>
+                            <div class="bar today" style="height: 65%"><span>5</span></div>
+                            <div class="bar weekend" style="height: 15%"><span>1</span></div>
+                            <div class="bar weekend" style="height: 0%"><span>0</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====================== SCREEN: UPLOAD ====================== -->
+    <section class="screen" id="screen-upload">
+        <div class="screen-header">
+            <h1>Upload Compensation Data</h1>
+            <p class="screen-subtitle">Submit raw compensation files for AI-powered processing</p>
+        </div>
+
+        <div class="wizard">
+            <div class="wizard-steps">
+                <div class="wizard-step active" id="ws1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Select Client & Period</div>
+                </div>
+                <div class="wizard-connector active"></div>
+                <div class="wizard-step" id="ws2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Upload Files</div>
+                </div>
+                <div class="wizard-connector"></div>
+                <div class="wizard-step" id="ws3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Confirm & Submit</div>
+                </div>
+            </div>
+
+            <!-- Step 1 -->
+            <div class="wizard-panel active" id="panel1">
+                <div class="card">
+                    <div class="card-header"><h2>Client & Period Details</h2></div>
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Client <span class="required">*</span></label>
+                                <select class="form-select">
+                                    <option>Select a client...</option>
+                                    <option selected>Acme Corporation</option>
+                                    <option>GlobalTech Inc.</option>
+                                    <option>Nordic Dynamics AB</option>
+                                    <option>Sakura Industries KK</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Compensation Period <span class="required">*</span></label>
+                                <select class="form-select">
+                                    <option>Select period...</option>
+                                    <option>January 2026</option>
+                                    <option>February 2026</option>
+                                    <option selected>March 2026</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Country <span class="auto-tag">Auto-detected</span></label>
+                                <select class="form-select">
+                                    <option selected>Germany</option>
+                                    <option>United States</option>
+                                    <option>United Kingdom</option>
+                                    <option>India</option>
+                                    <option>Singapore</option>
+                                    <option>Japan</option>
+                                </select>
+                                <span class="form-hint"><i class="fas fa-magic"></i> Detected from client profile. Override if needed.</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Compensation Type</label>
+                                <select class="form-select">
+                                    <option selected>All Types (Auto-detect)</option>
+                                    <option>Base Salary Only</option>
+                                    <option>Equity / Stock</option>
+                                    <option>Allowances</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" onclick="wizardNext(2)">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="wizard-panel" id="panel2">
+                <div class="card">
+                    <div class="card-header"><h2>Upload Files</h2></div>
+                    <div class="card-body">
+                        <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+                            <input type="file" id="file-input" multiple style="display:none" onchange="handleFiles(this.files)">
+                            <div class="dropzone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <div class="dropzone-text">Drag & drop files here or <span class="dropzone-link">click to browse</span></div>
+                            <div class="dropzone-hint">Supported: .xlsx, .xls, .csv, .pdf &nbsp;|&nbsp; Max: 50 MB per file</div>
+                        </div>
+
+                        <div class="file-list" id="file-list">
+                            <div class="file-item complete">
+                                <div class="file-icon xlsx"><i class="fas fa-file-excel"></i></div>
+                                <div class="file-info">
+                                    <div class="file-name">compensation_march_2026.xlsx</div>
+                                    <div class="file-meta">2.3 MB &bull; Uploaded</div>
+                                </div>
+                                <div class="file-status"><i class="fas fa-check-circle"></i></div>
+                                <button class="file-remove" title="Remove"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div class="file-item complete">
+                                <div class="file-icon csv"><i class="fas fa-file-csv"></i></div>
+                                <div class="file-info">
+                                    <div class="file-name">equity_vesting_q1.csv</div>
+                                    <div class="file-meta">450 KB &bull; Uploaded</div>
+                                </div>
+                                <div class="file-status"><i class="fas fa-check-circle"></i></div>
+                                <button class="file-remove" title="Remove"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div class="file-item uploading">
+                                <div class="file-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                                <div class="file-info">
+                                    <div class="file-name">vendor_report.pdf</div>
+                                    <div class="file-meta">1.1 MB &bull; Uploading...</div>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: 67%"></div></div>
+                                </div>
+                                <div class="file-percent">67%</div>
+                                <button class="file-remove" title="Cancel"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-ghost" onclick="wizardBack(1)"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button class="btn btn-primary" onclick="wizardNext(3)">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="wizard-panel" id="panel3">
+                <div class="card">
+                    <div class="card-header"><h2>Confirm & Submit</h2></div>
+                    <div class="card-body">
+                        <div class="confirm-summary">
+                            <div class="confirm-row">
+                                <span class="confirm-label">Client:</span>
+                                <span class="confirm-value">Acme Corporation</span>
+                            </div>
+                            <div class="confirm-row">
+                                <span class="confirm-label">Period:</span>
+                                <span class="confirm-value">March 2026</span>
+                            </div>
+                            <div class="confirm-row">
+                                <span class="confirm-label">Country:</span>
+                                <span class="confirm-value">Germany</span>
+                            </div>
+                            <div class="confirm-row">
+                                <span class="confirm-label">Files:</span>
+                                <span class="confirm-value">3 files (3.85 MB total)</span>
+                            </div>
+                        </div>
+
+                        <div class="confirm-checkbox">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="confirm-check" onchange="document.getElementById('submit-btn').disabled = !this.checked">
+                                <span class="checkmark"></span>
+                                I confirm the uploaded files contain compensation data for the selected client and period.
+                            </label>
+                        </div>
+
+                        <div class="form-group" style="max-width: 600px;">
+                            <label>Notes <span class="optional">(optional)</span></label>
+                            <textarea class="form-textarea" rows="3" placeholder="Add any notes for the processing team..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-ghost" onclick="wizardBack(2)"><i class="fas fa-arrow-left"></i> Back</button>
+                            <button class="btn btn-primary btn-lg" id="submit-btn" disabled onclick="showSubmitSuccess()">
+                                <i class="fas fa-paper-plane"></i> Submit for Processing
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal-overlay" id="submit-modal">
+            <div class="modal">
+                <div class="modal-icon success"><i class="fas fa-check-circle"></i></div>
+                <h2>Files Submitted Successfully!</h2>
+                <p>Your compensation data has been queued for AI processing.</p>
+                <div class="modal-details">
+                    <div class="confirm-row">
+                        <span class="confirm-label">Batch ID:</span>
+                        <span class="confirm-value"><strong>#1044</strong></span>
+                    </div>
+                    <div class="confirm-row">
+                        <span class="confirm-label">Estimated Processing:</span>
+                        <span class="confirm-value">~15 minutes</span>
+                    </div>
+                </div>
+                <p class="modal-note">You'll receive a notification when processing is complete.</p>
+                <button class="btn btn-primary" onclick="closeModal(); switchScreen('dashboard')">Go to Dashboard</button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====================== SCREEN: DATA REVIEW ====================== -->
+    <section class="screen" id="screen-review">
+        <div class="screen-header">
+            <div class="screen-header-left">
+                <h1>Data Review & Exceptions</h1>
+                <div class="batch-info-bar">
+                    <span class="batch-tag">Batch #1041</span>
+                    <span class="info-sep">|</span>
+                    <span>Client: <strong>Acme Corp</strong></span>
+                    <span class="info-sep">|</span>
+                    <span>Period: <strong>Mar 2026</strong></span>
+                    <span class="info-sep">|</span>
+                    <span class="badge badge-review">IN REVIEW</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="review-stats">
+            <div class="review-stat">
+                <div class="stat-number">847</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+            <div class="review-stat">
+                <div class="stat-number success">824</div>
+                <div class="stat-label">Validated</div>
+            </div>
+            <div class="review-stat">
+                <div class="stat-number warning">23</div>
+                <div class="stat-label">Exceptions</div>
+            </div>
+            <div class="review-stat">
+                <div class="stat-number">94.2%</div>
+                <div class="stat-label">AI Confidence</div>
+            </div>
+        </div>
+
+        <!-- Exception Summary -->
+        <div class="card exception-summary">
+            <div class="card-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Exception Summary</h2>
+                <div class="card-actions">
+                    <button class="btn btn-sm btn-outline active" onclick="toggleExceptions(this, 'all')">Show All Records</button>
+                    <button class="btn btn-sm btn-outline" onclick="toggleExceptions(this, 'exceptions')">Exceptions Only</button>
+                    <button class="btn btn-sm btn-outline"><i class="fas fa-download"></i> Export</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="exception-pills">
+                    <div class="exception-pill critical">
+                        <i class="fas fa-times-circle"></i>
+                        <strong>5 Critical</strong>: Missing Employee ID (3), Duplicate (2)
+                    </div>
+                    <div class="exception-pill warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>12 Warning</strong>: Amount variance &gt;20% (8), Currency mismatch (4)
+                    </div>
+                    <div class="exception-pill info">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>6 Info</strong>: New employees detected (6)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="card data-table-card">
+            <div class="card-body" style="padding: 0;">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" class="table-checkbox"></th>
+                                <th>Status</th>
+                                <th>Emp ID</th>
+                                <th>Name</th>
+                                <th>Comp Type</th>
+                                <th>Amount</th>
+                                <th>CCY</th>
+                                <th>Period</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td><span class="row-status ok"><i class="fas fa-check-circle"></i></span></td>
+                                <td>EMP-4521</td>
+                                <td>Alice Weber</td>
+                                <td>Base Salary</td>
+                                <td class="amount">€8,500.00</td>
+                                <td>EUR</td>
+                                <td>Mar 2026</td>
+                                <td><button class="btn btn-xs btn-ghost">View</button></td>
+                            </tr>
+                            <tr class="row-critical">
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td><span class="row-status critical"><i class="fas fa-times-circle"></i></span></td>
+                                <td class="cell-error">———</td>
+                                <td>Bob Mueller</td>
+                                <td>Housing Allowance</td>
+                                <td class="amount">€1,200.00</td>
+                                <td>EUR</td>
+                                <td>Mar 2026</td>
+                                <td><button class="btn btn-xs btn-warning">Resolve</button></td>
+                            </tr>
+                            <tr class="row-critical-detail">
+                                <td colspan="9">
+                                    <div class="inline-exception">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <strong>Missing Employee ID</strong> — No employee identifier found in source data. 
+                                        <a href="#" onclick="switchScreen('missing-info'); return false;">View generated question →</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="row-warning">
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td><span class="row-status warning"><i class="fas fa-exclamation-triangle"></i></span></td>
+                                <td>EMP-4523</td>
+                                <td>Clara Diaz</td>
+                                <td>Base Salary</td>
+                                <td class="amount cell-warning">€12,400.00</td>
+                                <td>EUR</td>
+                                <td>Mar 2026</td>
+                                <td><button class="btn btn-xs btn-warning">Review</button></td>
+                            </tr>
+                            <tr class="row-warning-detail">
+                                <td colspan="9">
+                                    <div class="inline-exception warn">
+                                        <i class="fas fa-chart-line"></i>
+                                        <strong>Amount Variance:</strong> 34% higher than prior month (€9,250). Historical avg: €9,100.
+                                        <div class="inline-actions">
+                                            <button class="btn btn-xs btn-success" onclick="resolveException(this)">Accept</button>
+                                            <button class="btn btn-xs btn-ghost">Edit</button>
+                                            <button class="btn btn-xs btn-ghost">Escalate</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td><span class="row-status ok"><i class="fas fa-check-circle"></i></span></td>
+                                <td>EMP-4524</td>
+                                <td>Dan Park</td>
+                                <td>Base Salary</td>
+                                <td class="amount">€7,800.00</td>
+                                <td>EUR</td>
+                                <td>Mar 2026</td>
+                                <td><button class="btn btn-xs btn-ghost">View</button></td>
+                            </tr>
+                            <tr class="row-critical">
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td><span class="row-status critical"><i class="fas fa-times-circle"></i></span></td>
+                                <td>EMP-4521</td>
+                                <td>Alice Weber</td>
+                                <td>Base Salary</td>
+                                <td class="amount">€8,500.00</td>
+                                <td>EUR</td>
+                                <td>Mar 2026</td>
+                                <td><button class="btn btn-xs btn-warning">Resolve</button></td>
+                            </tr>
+                            <tr class="row-critical-detail">
+                                <td colspan="9">
+                                    <div class="inline-exception">
+                                        <i class="fas fa-clone"></i>
+                                        <strong>Potential Duplicate</strong> — Identical record found in row 1 (same Emp ID, Comp Type, Amount).
+                                        <div class="inline-actions">
+                                            <button class="btn btn-xs btn-danger">Remove Duplicate</button>
+                                            <button class="btn btn-xs btn-ghost">Keep Both</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="row-info">
+                                <td><input type="checkbox" class="table-checkbox"></td>
+                                <td><span class="row-status info"><i class="fas fa-info-circle"></i></span></td>
+                                <td>EMP-4590</td>
+                                <td>Eva Schneider</td>
+                                <td>Base Salary</td>
+                                <td class="amount">€6,200.00</td>
+                                <td>EUR</td>
+                                <td>Mar 2026</td>
+                                <td><button class="btn btn-xs btn-ghost">View</button></td>
+                            </tr>
+                            <tr class="row-info-detail">
+                                <td colspan="9">
+                                    <div class="inline-exception infox">
+                                        <i class="fas fa-user-plus"></i>
+                                        <strong>New Employee</strong> — Not found in prior month's data. First appearance in compensation records.
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-info">Showing 1–6 of 847 records</div>
+                    <div class="pagination">
+                        <button class="page-btn disabled"><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-dots">...</span>
+                        <button class="page-btn">17</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Mapping Log -->
+        <div class="card mapping-log">
+            <div class="card-header">
+                <h2><i class="fas fa-robot"></i> AI Schema Mapping Log</h2>
+                <a href="#" class="card-link">View Full Log</a>
+            </div>
+            <div class="card-body">
+                <div class="mapping-row">
+                    <div class="mapping-from">"Brutto Gehalt"</div>
+                    <div class="mapping-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+                    <div class="mapping-to">Base Salary</div>
+                    <div class="mapping-conf high">97%</div>
+                    <div class="mapping-reason">German "Brutto" = Gross; values match monthly salary range</div>
+                </div>
+                <div class="mapping-row">
+                    <div class="mapping-from">"Mitarbeiter Nr"</div>
+                    <div class="mapping-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+                    <div class="mapping-to">Employee ID</div>
+                    <div class="mapping-conf high">94%</div>
+                    <div class="mapping-reason">German "Mitarbeiter" = Employee; "Nr" = Number</div>
+                </div>
+                <div class="mapping-row">
+                    <div class="mapping-from">"Währung"</div>
+                    <div class="mapping-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+                    <div class="mapping-to">Currency</div>
+                    <div class="mapping-conf high">99%</div>
+                    <div class="mapping-reason">German "Währung" = Currency; all values are ISO 4217 codes</div>
+                </div>
+                <div class="mapping-row">
+                    <div class="mapping-from">"Abteilung"</div>
+                    <div class="mapping-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+                    <div class="mapping-to">Department</div>
+                    <div class="mapping-conf medium">82%</div>
+                    <div class="mapping-reason">German "Abteilung" = Department; needs confirmation</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Actions -->
+        <div class="review-actions">
+            <button class="btn btn-outline" onclick="switchScreen('missing-info')"><i class="fas fa-paper-plane"></i> Send to Clarifier</button>
+            <button class="btn btn-primary btn-lg"><i class="fas fa-check-double"></i> Mark as Reviewed</button>
+        </div>
+    </section>
+
+
+    <!-- ====================== SCREEN: MISSING INFO Q&A ====================== -->
+    <section class="screen" id="screen-missing-info">
+        <div class="screen-header">
+            <div class="screen-header-left">
+                <h1>Missing Information — Q&A</h1>
+                <div class="batch-info-bar">
+                    <span class="batch-tag">Batch #1041</span>
+                    <span class="info-sep">|</span>
+                    <span>Client: <strong>Acme Corp</strong></span>
+                    <span class="info-sep">|</span>
+                    <span>Period: <strong>Mar 2026</strong></span>
+                    <span class="info-sep">|</span>
+                    <span>7 questions pending</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="qa-progress-bar">
+            <div class="qa-progress-fill" style="width: 43%"></div>
+        </div>
+        <div class="qa-progress-info">
+            <span><strong>3 of 7</strong> questions answered</span>
+            <span class="sla-timer"><i class="fas fa-clock"></i> SLA: <strong>18 hrs</strong> remaining</span>
+        </div>
+
+        <!-- Question Card -->
+        <div class="qa-card">
+            <div class="qa-header">
+                <span class="qa-number">Question 4 of 7</span>
+                <span class="badge badge-critical">CRITICAL</span>
+            </div>
+            <div class="qa-body">
+                <div class="qa-question">
+                    <div class="qa-icon"><i class="fas fa-robot"></i></div>
+                    <div class="qa-text">
+                        <p>Employee <strong>"Bob Mueller"</strong> has no Employee ID in the uploaded file. We found a partial match in the prior month's data:</p>
+                        <div class="qa-comparison">
+                            <div class="qa-compare-col">
+                                <div class="compare-header old">Prior Month (Feb 2026)</div>
+                                <div class="compare-row"><span class="compare-label">Name:</span> B. Mueller</div>
+                                <div class="compare-row"><span class="compare-label">ID:</span> <strong>EMP-4525</strong></div>
+                                <div class="compare-row"><span class="compare-label">Department:</span> Finance</div>
+                                <div class="compare-row"><span class="compare-label">Comp:</span> €1,200 Housing</div>
+                            </div>
+                            <div class="qa-compare-arrow"><i class="fas fa-arrows-alt-h"></i></div>
+                            <div class="qa-compare-col">
+                                <div class="compare-header new">Current File (Mar 2026)</div>
+                                <div class="compare-row"><span class="compare-label">Name:</span> Bob Mueller</div>
+                                <div class="compare-row"><span class="compare-label">ID:</span> <span class="missing-value">Missing</span></div>
+                                <div class="compare-row"><span class="compare-label">Department:</span> Finance</div>
+                                <div class="compare-row"><span class="compare-label">Comp:</span> €1,200 Housing</div>
+                            </div>
+                        </div>
+                        <div class="ai-suggestion">
+                            <div class="ai-suggestion-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div class="ai-suggestion-text">
+                                <strong>AI Suggestion:</strong> These appear to be the same person (name match: 92%, same department, same comp type and amount). Assign Employee ID = <strong>EMP-4525</strong>?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qa-answers">
+                    <h3>Your Answer:</h3>
+                    <label class="radio-option selected">
+                        <input type="radio" name="q4" checked>
+                        <span class="radio-mark"></span>
+                        <span class="radio-text">Yes, confirm <strong>EMP-4525</strong></span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q4">
+                        <span class="radio-mark"></span>
+                        <span class="radio-text">No, this is a different person. Correct ID:
+                            <input type="text" class="inline-input" placeholder="Enter ID..." disabled>
+                        </span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="q4">
+                        <span class="radio-mark"></span>
+                        <span class="radio-text">I need to check — skip for now</span>
+                    </label>
+                </div>
+
+                <div class="qa-attach">
+                    <button class="btn btn-sm btn-outline"><i class="fas fa-paperclip"></i> Attach supporting document</button>
+                </div>
+            </div>
+            <div class="qa-footer">
+                <button class="btn btn-ghost"><i class="fas fa-chevron-left"></i> Previous</button>
+                <div class="qa-dots">
+                    <span class="dot answered"></span>
+                    <span class="dot answered"></span>
+                    <span class="dot answered"></span>
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <button class="btn btn-primary">Submit & Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ====================== SCREEN: REPORTS ====================== -->
+    <section class="screen" id="screen-reports">
+        <div class="screen-header">
+            <div class="screen-header-left">
+                <h1>Report Generation</h1>
+                <div class="batch-info-bar">
+                    <span class="batch-tag">Batch #1041</span>
+                    <span class="info-sep">|</span>
+                    <span>Client: <strong>Acme Corp</strong></span>
+                    <span class="info-sep">|</span>
+                    <span>Period: <strong>Mar 2026</strong></span>
+                    <span class="info-sep">|</span>
+                    <span class="badge badge-ready">READY FOR PAYROLL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="reports-grid">
+            <!-- Control Report -->
+            <div class="report-card">
+                <div class="report-header">
+                    <div class="report-icon control"><i class="fas fa-clipboard-check"></i></div>
+                    <div class="report-title-block">
+                        <h2>Control Report</h2>
+                        <p>Internal QA — processing results, exceptions & audit trail</p>
+                    </div>
+                    <span class="badge badge-generated">Generated</span>
+                </div>
+                <div class="report-body">
+                    <div class="report-meta">
+                        <span><i class="fas fa-calendar"></i> Mar 12, 2026 14:32 UTC</span>
+                        <span><i class="fas fa-file-alt"></i> Version 1.0</span>
+                    </div>
+                    <div class="report-preview">
+                        <div class="preview-header">
+                            <div class="preview-ey">EY</div>
+                            <span>CompAI Control Report</span>
+                        </div>
+                        <div class="preview-body">
+                            <div class="preview-row"><span>Total Records:</span><strong>847</strong></div>
+                            <div class="preview-row"><span>Validated:</span><strong>824 (97.3%)</strong></div>
+                            <div class="preview-row"><span>Exceptions Resolved:</span><strong>23 (100%)</strong></div>
+                            <div class="preview-row"><span>AI Confidence:</span><strong>94.2%</strong></div>
+                            <div class="preview-row"><span>Processing Time:</span><strong>1 hr 47 min</strong></div>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-eye"></i> View PDF</button>
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-file-excel"></i> Download Excel</button>
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-search"></i> Preview</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payroll Report -->
+            <div class="report-card">
+                <div class="report-header">
+                    <div class="report-icon payroll"><i class="fas fa-money-check-alt"></i></div>
+                    <div class="report-title-block">
+                        <h2>Payroll Instruction Report</h2>
+                        <p>Employee-level payment instructions for HR/Payroll team</p>
+                    </div>
+                    <span class="badge badge-generated">Generated</span>
+                </div>
+                <div class="report-body">
+                    <div class="report-meta">
+                        <span><i class="fas fa-users"></i> 847 records</span>
+                        <span><i class="fas fa-euro-sign"></i> Total: €2,847,600.00</span>
+                    </div>
+                    <div class="report-highlights">
+                        <div class="highlight-item">
+                            <div class="highlight-label">Top Comp Type</div>
+                            <div class="highlight-value">Base Salary (78%)</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-label">Payment Methods</div>
+                            <div class="highlight-value">Bank Transfer (100%)</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-label">GL Codes</div>
+                            <div class="highlight-value">12 unique codes</div>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-eye"></i> View PDF</button>
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-file-excel"></i> Excel</button>
+                        <button class="btn btn-sm btn-outline"><i class="fas fa-file-csv"></i> CSV</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Year-End Report -->
+            <div class="report-card locked">
+                <div class="report-header">
+                    <div class="report-icon yearend"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="report-title-block">
+                        <h2>Year-End Compensation Report</h2>
+                        <p>Annual summary for tax and compliance</p>
+                    </div>
+                    <span class="badge badge-locked"><i class="fas fa-lock"></i> Not Yet</span>
+                </div>
+                <div class="report-body">
+                    <div class="report-locked-msg">
+                        <i class="fas fa-lock"></i>
+                        <p>Available after the December 2026 cycle is finalized. Year-end report aggregates all monthly data into a comprehensive annual summary.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Actions -->
+        <div class="review-actions">
+            <button class="btn btn-outline" onclick="switchScreen('review')"><i class="fas fa-arrow-left"></i> Back to Review</button>
+            <button class="btn btn-primary btn-lg" onclick="showApprovalModal()"><i class="fas fa-stamp"></i> Submit for Approval</button>
+        </div>
+
+        <!-- Approval Modal -->
+        <div class="modal-overlay" id="approval-modal">
+            <div class="modal">
+                <div class="modal-icon success"><i class="fas fa-paper-plane"></i></div>
+                <h2>Submitted for Approval</h2>
+                <p>Batch #1041 has been sent to the Approver for final sign-off.</p>
+                <div class="modal-details">
+                    <div class="confirm-row">
+                        <span class="confirm-label">Approver:</span>
+                        <span class="confirm-value">M. Director (PAS Director)</span>
+                    </div>
+                    <div class="confirm-row">
+                        <span class="confirm-label">SLA:</span>
+                        <span class="confirm-value">4 hours for approval</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="closeApprovalModal(); switchScreen('dashboard')">Go to Dashboard</button>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // Screen switching
+    function switchScreen(screenId, navEl) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('screen-' + screenId).classList.add('active');
+
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if (navEl) {
+            navEl.classList.add('active');
+        } else {
+            document.querySelector(`[data-screen="${screenId}"]`)?.classList.add('active');
+        }
+
+        const titles = {
+            'dashboard': 'Dashboard',
+            'upload': 'Upload Compensation Data',
+            'review': 'Data Review & Exceptions',
+            'missing-info': 'Missing Info — Q&A',
+            'reports': 'Report Generation'
+        };
+        document.getElementById('page-title').textContent = titles[screenId] || 'Dashboard';
+        window.scrollTo(0, 0);
+    }
+
+    // Wizard steps
+    function wizardNext(step) {
+        document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('panel' + step).classList.add('active');
+
+        document.querySelectorAll('.wizard-step').forEach((s, i) => {
+            s.classList.toggle('active', i < step);
+            s.classList.toggle('completed', i < step - 1);
+        });
+        document.querySelectorAll('.wizard-connector').forEach((c, i) => {
+            c.classList.toggle('active', i < step - 1);
+        });
+    }
+
+    function wizardBack(step) {
+        wizardNext(step);
+    }
+
+    // File handling
+    function handleFiles(files) {
+        // placeholder
+    }
+
+    // Submit success
+    function showSubmitSuccess() {
+        document.getElementById('submit-modal').classList.add('visible');
+    }
+
+    function closeModal() {
+        document.getElementById('submit-modal').classList.remove('visible');
+        // Reset wizard
+        wizardNext(1);
+        document.getElementById('confirm-check').checked = false;
+        document.getElementById('submit-btn').disabled = true;
+    }
+
+    // Approval modal
+    function showApprovalModal() {
+        document.getElementById('approval-modal').classList.add('visible');
+    }
+
+    function closeApprovalModal() {
+        document.getElementById('approval-modal').classList.remove('visible');
+    }
+
+    // Toggle exceptions
+    function toggleExceptions(btn, type) {
+        document.querySelectorAll('.card-actions .btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    // Notifications panel
+    function toggleNotifications() {
+        document.getElementById('notif-panel').classList.toggle('visible');
+    }
+
+    // Resolve exception
+    function resolveException(btn) {
+        const row = btn.closest('tr');
+        const prevRow = row.previousElementSibling;
+        if (prevRow) prevRow.classList.remove('row-warning');
+        row.innerHTML = '<td colspan="9"><div class="inline-exception resolved"><i class="fas fa-check-circle"></i> <strong>Resolved</strong> — Accepted by reviewer.</div></td>';
+    }
+
+    // Close notification panel on outside click
+    document.addEventListener('click', function(e) {
+        const panel = document.getElementById('notif-panel');
+        if (panel.classList.contains('visible') && !panel.contains(e.target) && !e.target.closest('.top-btn')) {
+            panel.classList.remove('visible');
+        }
+    });
+</script>
+</body>
+</html>

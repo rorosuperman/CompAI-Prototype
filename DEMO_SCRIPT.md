@@ -1,7 +1,7 @@
 # CompAI — Demo Script
 
 **Duration:** ~5–6 minutes  
-**Presenter:** Jane Smith, PAS Manager  
+**Presenter:** Rohan Kumar N, PAS Manager  
 **Date:** March 25, 2026
 
 ---
@@ -48,7 +48,12 @@
 
 ### Step 2 — Upload Files
 
-> "Next, I upload files. CompAI accepts Excel, CSV, and even PDF. You can see we already have three files here — an Excel workbook with compensation data, a CSV with equity vesting details, and a PDF vendor report."
+> "Next, I upload files. CompAI accepts Excel, CSV, PDF, and even ZIP bundles. You can see we already have four files here — an Excel workbook with 3 sheets of compensation data, a CSV with equity vesting details, a ZIP bundle containing 5 payroll files that was auto-extracted, and a PDF vendor report."
+
+**Point out:**
+- The Excel file shows a **"3 sheets detected"** badge — CompAI handles multi-tab workbooks natively
+- The ZIP file shows **"5 files extracted"** — ZIP bundles are auto-extracted and each file processed individually
+- The feature badges below the dropzone: **Multi-tab Excel supported**, **ZIP auto-extraction**, **Malware scanned**
 
 **[The PDF auto-completes its upload progress bar after ~2.5 seconds]**
 
@@ -62,9 +67,9 @@
 
 **Check the checkbox, then click "Submit for Processing."**
 
-**[The modal opens showing each file being processed one by one — the Excel file is parsed and validated, then the CSV is cross-referenced for employee IDs, then the PDF is extracted — a progress bar fills across the bottom. After all 3 files complete, the modal transitions to the success screen with Batch #1044.]**
+**[The modal opens showing each file being processed one by one — the Excel file (3 sheets) is parsed and validated, then the CSV is cross-referenced for employee IDs, then the ZIP is extracted and its 5 files scanned, then the PDF is extracted — a progress bar fills across the bottom. After all 4 files complete, the modal transitions to the success screen with Batch #1044.]**
 
-> "Watch what happens — the AI is processing each file in real time. It reads the Excel compensation data, cross-references employee IDs in the CSV, and extracts structured data from the PDF. All three files validated and mapped."
+> "Watch what happens — the AI is processing each file in real time. It reads the Excel compensation data across all 3 sheets, cross-references employee IDs in the CSV, extracts and validates the 5 files from the ZIP bundle, and extracts structured data from the PDF. All four files validated and mapped."
 
 **Click "Go to Data Review."**
 
@@ -81,6 +86,12 @@
 ### Stats Row
 
 > "Below that: 847 total records ingested, 824 validated clean, and 23 flagged as exceptions for human review."
+
+### Data Integrity & TQRM Compliance
+
+> "Before we even look at the data, notice these two green strips. The top one — **Data Integrity** — confirms all 5 automated checks passed: schema validated, checksum match, no tampering, encryption verified, and audit trail logged."
+
+> "The second strip — **TQRM & Compliance** — this is critical. It confirms the batch passes Tax Quality Risk Management review, PII is auto-masked, GDPR data residency is enforced, access controls are verified, and data retention policies are applied. Confidential salary data like SSN, bank details, and compensation figures are all encrypted and masked in the UI. Only authorized PAS team members see real values."
 
 ### Exception Summary
 
@@ -198,12 +209,14 @@
 ## Closing (30 seconds)
 
 > "So let's recap what CompAI just did:
-> 1. **Ingested** raw files in multiple formats, including German-language Excel and PDF
+> 1. **Ingested** raw files in multiple formats — multi-tab Excel, CSV, ZIP bundles, and German-language PDF
 > 2. **Mapped** foreign-language headers to our schema using AI — no manual configuration
-> 3. **Validated** 847 records and flagged 23 exceptions with severity and context
-> 4. **Generated** smart clarification questions with AI suggestions from historical data
-> 5. **Packaged** resolved items and sent remaining questions to the client's HR — one click
-> 6. **Produced** payroll-ready reports in under 2 hours — a process that used to take days
+> 3. **Validated** 847 records with full data integrity and TQRM compliance checks
+> 4. **Flagged** 23 exceptions with severity and context, while 824 records passed clean
+> 5. **Generated** smart clarification questions with AI suggestions from historical data
+> 6. **Packaged** resolved items and sent remaining questions to the client's HR — one click
+> 7. **Ensured** PII masking, GDPR compliance, and SOX audit trail throughout
+> 8. **Produced** payroll-ready reports in under 2 hours — a process that used to take days
 >
 > This is CompAI — AI-powered compensation processing. Faster, more accurate, and built for global complexity."
 
@@ -239,3 +252,19 @@
 - **"Can it handle other countries?"** — Yes. The system supports multi-country, multi-currency, multi-language processing out of the box.
 
 - **"What happens when the AI is wrong?"** — The exception workflow is designed exactly for that. Low-confidence mappings get flagged, humans review and correct, and the AI learns from those corrections over time.
+
+- **"What about data integrity?"** — Point to the green integrity strip on the Data Review screen. Every batch goes through 5 automated checks: schema validation, checksum matching, tamper detection, encryption verification, and audit trail logging. All visible right in the UI.
+
+- **"What about TQRM and compliance?"** — Point to the second strip — TQRM & Compliance. Every batch goes through Tax Quality Risk Management review. PII data like SSNs and bank details is auto-masked. GDPR data residency rules are enforced. Access controls verify only authorized PAS team members can see sensitive data. Every action is logged for SOX audit trail.
+
+- **"How do you handle confidential data?"** — All confidential compensation data — salaries, bonus amounts, bank details, SSN — is encrypted at rest and in transit. PII is auto-masked in the UI. The TQRM compliance strip confirms this in real time. Plus, role-based access controls ensure only authorized users see real values.
+
+- **"Is there chat support?"** — Click the yellow **AI Assistant** pill in the bottom-right corner. CompAI has a built-in AI-powered assistant that understands your batch context — it can answer questions about exceptions, SLA status, file formats, TQRM compliance, and confidential data handling. Try asking it about TQRM or batch status — it gives specific, contextual answers.
+
+- **"What about the records that pass? How do we know they're clean?"** — Point to the green "824 Passed" pill in the Exception Summary. These records passed all validation rules — schema, amount ranges, employee matching, currency checks — and go straight to payroll. Only the 23 exceptions need human attention.
+
+- **"Can someone upload a wrong file type? What about malware?"** — The upload accepts .xlsx, .xls, .csv, .pdf, and .zip — the file picker blocks everything else. Each uploaded file shows a green "Scanned" badge confirming it passed malware scanning. ZIP files are auto-extracted and each contained file is individually scanned. Files exceeding 50 MB are rejected with an error toast.
+
+- **"Can we upload multiple files at once? What about ZIP bundles?"** — Yes. The upload supports drag-and-drop of multiple files simultaneously. ZIP bundles are auto-extracted — each file inside is individually validated and processed. Multi-tab Excel files are also detected automatically, with each sheet processed as a separate data source.
+
+- **"What about multi-tab Excel files?"** — CompAI auto-detects multiple tabs/sheets in an Excel workbook. You can see the badge on the uploaded file — "3 sheets detected". Each sheet is parsed and validated independently, then combined into a unified dataset.

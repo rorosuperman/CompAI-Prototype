@@ -451,7 +451,7 @@
                             </label>
                         </div>
 
-                        <div class="form-group" style="max-width: 600px;">
+                        <div class="form-group form-group--narrow">
                             <label>Notes <span class="optional">(optional)</span></label>
                             <textarea class="form-textarea" rows="3" placeholder="Add any notes for the processing team..."></textarea>
                         </div>
@@ -467,24 +467,65 @@
             </div>
         </div>
 
-        <!-- Success Modal -->
+        <!-- Submit & Processing Modal -->
         <div class="modal-overlay" id="submit-modal">
-            <div class="modal">
-                <div class="modal-icon success"><i class="fas fa-check-circle"></i></div>
-                <h2>Files Submitted Successfully!</h2>
-                <p>Your compensation data has been queued for AI processing.</p>
-                <div class="modal-details">
-                    <div class="confirm-row">
-                        <span class="confirm-label">Batch ID:</span>
-                        <span class="confirm-value"><strong>#1044</strong></span>
+            <div class="modal modal--processing">
+                <!-- Phase 1: Processing Animation -->
+                <div class="modal-phase" id="modal-phase-processing">
+                    <div class="processing-files">
+                        <div class="proc-file" id="pf1">
+                            <div class="proc-file-icon xlsx"><i class="fas fa-file-excel"></i></div>
+                            <div class="proc-file-info">
+                                <div class="proc-file-name">compensation_march_2026.xlsx</div>
+                                <div class="proc-file-status">Waiting...</div>
+                            </div>
+                            <div class="proc-file-check"><i class="fas fa-check-circle"></i></div>
+                        </div>
+                        <div class="proc-file" id="pf2">
+                            <div class="proc-file-icon csv"><i class="fas fa-file-csv"></i></div>
+                            <div class="proc-file-info">
+                                <div class="proc-file-name">equity_vesting_q1.csv</div>
+                                <div class="proc-file-status">Waiting...</div>
+                            </div>
+                            <div class="proc-file-check"><i class="fas fa-check-circle"></i></div>
+                        </div>
+                        <div class="proc-file" id="pf3">
+                            <div class="proc-file-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                            <div class="proc-file-info">
+                                <div class="proc-file-name">vendor_report.pdf</div>
+                                <div class="proc-file-status">Waiting...</div>
+                            </div>
+                            <div class="proc-file-check"><i class="fas fa-check-circle"></i></div>
+                        </div>
                     </div>
-                    <div class="confirm-row">
-                        <span class="confirm-label">Estimated Processing:</span>
-                        <span class="confirm-value">~15 minutes</span>
+                    <div class="proc-stage">
+                        <div class="spinner spinner--sm"></div>
+                        <span id="proc-stage-text">Uploading files...</span>
+                    </div>
+                    <div class="proc-progress-bar"><div class="proc-progress-fill" id="proc-fill"></div></div>
+                </div>
+
+                <!-- Phase 2: Success -->
+                <div class="modal-phase modal-phase--hidden" id="modal-phase-success">
+                    <div class="modal-icon success"><i class="fas fa-check-circle"></i></div>
+                    <h2>Files Submitted Successfully!</h2>
+                    <p>Your compensation data has been queued for AI processing.</p>
+                    <div class="modal-details">
+                        <div class="confirm-row">
+                            <span class="confirm-label">Batch ID:</span>
+                            <span class="confirm-value"><strong>#1044</strong></span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="confirm-label">Estimated Processing:</span>
+                            <span class="confirm-value">~15 minutes</span>
+                        </div>
+                    </div>
+                    <p class="modal-note">You'll receive a notification when processing is complete.</p>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="closeModal(); switchScreen('review')"><i class="fas fa-search-plus"></i> Go to Data Review</button>
+                        <button class="btn btn-ghost" onclick="closeModal(); switchScreen('dashboard')">Back to Dashboard</button>
                     </div>
                 </div>
-                <p class="modal-note">You'll receive a notification when processing is complete.</p>
-                <button class="btn btn-primary" onclick="closeModal(); switchScreen('dashboard')">Go to Dashboard</button>
             </div>
         </div>
     </section>
@@ -492,7 +533,7 @@
 
     <!-- ====================== SCREEN: DATA REVIEW ====================== -->
     <section class="screen" id="screen-review">
-        <div class="screen-header">
+        <div class="screen-header screen-header--flex">
             <div class="screen-header-left">
                 <h1>Data Review & Exceptions</h1>
                 <div class="batch-info-bar">
@@ -504,6 +545,16 @@
                     <span class="info-sep">|</span>
                     <span class="badge badge-review">IN REVIEW</span>
                 </div>
+            </div>
+            <div class="review-stat review-stat--ring">
+                <div class="confidence-ring">
+                    <svg viewBox="0 0 120 120" class="ring-svg">
+                        <circle class="ring-track" cx="60" cy="60" r="52"/>
+                        <circle class="ring-fill" cx="60" cy="60" r="52" stroke-dasharray="326.73" stroke-dashoffset="326.73" data-percent="94.2"/>
+                    </svg>
+                    <div class="ring-value">94.2<small>%</small></div>
+                </div>
+                <div class="stat-label">AI Confidence</div>
             </div>
         </div>
 
@@ -520,10 +571,6 @@
             <div class="review-stat">
                 <div class="stat-number warning">23</div>
                 <div class="stat-label">Exceptions</div>
-            </div>
-            <div class="review-stat">
-                <div class="stat-number">94.2%</div>
-                <div class="stat-label">AI Confidence</div>
             </div>
         </div>
 
@@ -557,7 +604,7 @@
 
         <!-- Data Table -->
         <div class="card data-table-card">
-            <div class="card-body" style="padding: 0;">
+            <div class="card-body card-body--flush">
                 <div class="table-wrapper">
                     <table class="data-table">
                         <thead>
@@ -741,14 +788,14 @@
         <!-- Bottom Actions -->
         <div class="review-actions">
             <button class="btn btn-outline" onclick="switchScreen('missing-info')"><i class="fas fa-paper-plane"></i> Send to Clarifier</button>
-            <button class="btn btn-primary btn-lg"><i class="fas fa-check-double"></i> Mark as Reviewed</button>
+            <button class="btn btn-primary btn-lg" onclick="markAsReviewed()"><i class="fas fa-check-double"></i> Mark as Reviewed</button>
         </div>
     </section>
 
 
     <!-- ====================== SCREEN: MISSING INFO Q&A ====================== -->
     <section class="screen" id="screen-missing-info">
-        <div class="screen-header">
+        <div class="screen-header screen-header--flex">
             <div class="screen-header-left">
                 <h1>Missing Information — Q&A</h1>
                 <div class="batch-info-bar">
@@ -848,12 +895,133 @@
                 <button class="btn btn-primary">Submit & Next <i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
+
+        <!-- Bottom Actions -->
+        <div class="review-actions">
+            <button class="btn btn-outline" onclick="switchScreen('review')"><i class="fas fa-arrow-left"></i> Back to Review</button>
+            <div class="review-actions-right">
+                <button class="btn btn-ghost" onclick="showToast('Draft saved', 'info')"><i class="fas fa-save"></i> Save as Draft</button>
+                <button class="btn btn-primary btn-lg" onclick="showClarificationSummary()"><i class="fas fa-paper-plane"></i> Send Clarification to HR</button>
+            </div>
+        </div>
+
+        <!-- Clarification Summary Modal -->
+        <div class="modal-overlay" id="clarification-modal">
+            <div class="modal modal--wide">
+                <!-- Phase 1: Summary -->
+                <div class="modal-phase" id="clar-phase-summary">
+                    <div class="modal-icon info-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <h2>Clarification Summary</h2>
+                    <p>Only pending questions will be sent to Acme Corp HR</p>
+
+                    <!-- Section: Auto-applied -->
+                    <div class="clar-section">
+                        <div class="clar-section-header">
+                            <i class="fas fa-check-circle clar-section-icon success"></i>
+                            <span>Resolved — will be applied to batch automatically</span>
+                            <span class="clar-section-count success">4</span>
+                        </div>
+                        <div class="clar-items clar-items--compact">
+                            <div class="clar-item resolved">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Missing Employee ID (Bob Mueller) → <strong>Confirmed EMP-4525</strong></span>
+                                <span class="clar-tag clar-tag--ai">AI Accepted</span>
+                            </div>
+                            <div class="clar-item resolved">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Missing Employee ID (Row 42) → <strong>Confirmed EMP-4601</strong></span>
+                                <span class="clar-tag clar-tag--ai">AI Accepted</span>
+                            </div>
+                            <div class="clar-item resolved">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Duplicate record (Alice Weber) → <strong>Remove duplicate</strong></span>
+                                <span class="clar-tag clar-tag--ai">AI Accepted</span>
+                            </div>
+                            <div class="clar-item resolved">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Currency mismatch (Row 89) → <strong>Corrected to EUR</strong></span>
+                                <span class="clar-tag clar-tag--manual">Manual</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Sending to HR -->
+                    <div class="clar-section">
+                        <div class="clar-section-header">
+                            <i class="fas fa-paper-plane clar-section-icon warning"></i>
+                            <span>Pending — will be sent to HR for clarification</span>
+                            <span class="clar-section-count warning">3</span>
+                        </div>
+                        <div class="clar-items">
+                            <div class="clar-item pending">
+                                <i class="fas fa-clock"></i>
+                                <span>Missing department code — 2 employees</span>
+                                <span class="clar-tag clar-tag--hr">Sending to HR</span>
+                            </div>
+                            <div class="clar-item pending">
+                                <i class="fas fa-clock"></i>
+                                <span>New hire confirmation — Eva Schneider</span>
+                                <span class="clar-tag clar-tag--hr">Sending to HR</span>
+                            </div>
+                            <div class="clar-item pending">
+                                <i class="fas fa-clock"></i>
+                                <span>Bonus amount verification — 1 employee</span>
+                                <span class="clar-tag clar-tag--hr">Sending to HR</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group--narrow">
+                        <label>Additional Notes to HR <span class="optional">(optional)</span></label>
+                        <textarea class="form-textarea" rows="2" placeholder="Add context for the HR team..."></textarea>
+                    </div>
+
+                    <div class="modal-actions modal-actions--row">
+                        <button class="btn btn-ghost" onclick="closeClarificationModal()">Cancel</button>
+                        <button class="btn btn-primary" onclick="sendClarificationToHR()"><i class="fas fa-paper-plane"></i> Send 3 Questions to HR</button>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Sending animation -->
+                <div class="modal-phase modal-phase--hidden" id="clar-phase-sending">
+                    <div class="clar-sending">
+                        <div class="clar-sending-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="clar-sending-steps">
+                            <div class="clar-send-step" id="cs1"><i class="fas fa-circle-notch fa-spin"></i> Applying 4 resolved items to batch...</div>
+                            <div class="clar-send-step" id="cs2"><i class="fas fa-circle-notch"></i> Generating clarification email for 3 pending items...</div>
+                            <div class="clar-send-step" id="cs3"><i class="fas fa-circle-notch"></i> Sending to Acme Corp HR team...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Success -->
+                <div class="modal-phase modal-phase--hidden" id="clar-phase-done">
+                    <div class="modal-icon success"><i class="fas fa-check-circle"></i></div>
+                    <h2>Sent to HR!</h2>
+                    <p>4 resolved items applied to batch. Only 3 pending questions sent to Acme Corp HR for clarification.</p>
+                    <div class="modal-details">
+                        <div class="confirm-row">
+                            <span class="confirm-label">Sent to:</span>
+                            <span class="confirm-value"><strong>hr-team@acmecorp.com</strong></span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="confirm-label">Response SLA:</span>
+                            <span class="confirm-value">24 hours</span>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="closeClarificationModal(); switchScreen('review')"><i class="fas fa-search-plus"></i> Back to Data Review</button>
+                        <button class="btn btn-ghost" onclick="closeClarificationModal(); switchScreen('dashboard')">Go to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
 
     <!-- ====================== SCREEN: REPORTS ====================== -->
     <section class="screen" id="screen-reports">
-        <div class="screen-header">
+        <div class="screen-header screen-header--flex">
             <div class="screen-header-left">
                 <h1>Report Generation</h1>
                 <div class="batch-info-bar">
@@ -990,101 +1158,538 @@
 
 </main>
 
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Processing Overlay -->
+<div class="processing-overlay" id="processing-overlay">
+    <div class="processing-card">
+        <div class="spinner"></div>
+        <h3 id="processing-title">Processing...</h3>
+        <p id="processing-text">AI is analyzing your compensation data</p>
+    </div>
+</div>
+
 <script>
-    // Screen switching
+    // ==================== TOAST SYSTEM ====================
+    function showToast(message, type, duration) {
+        type = type || 'success';
+        duration = duration || 3500;
+        var icons = {
+            success: 'fa-check-circle',
+            info: 'fa-info-circle',
+            warning: 'fa-exclamation-triangle',
+            error: 'fa-times-circle'
+        };
+        var container = document.getElementById('toast-container');
+        var toast = document.createElement('div');
+        toast.className = 'toast toast-' + type;
+        toast.innerHTML = '<i class="fas ' + icons[type] + '"></i><span>' + message + '</span>';
+        container.appendChild(toast);
+        setTimeout(function() {
+            toast.classList.add('toast-out');
+            setTimeout(function() { toast.remove(); }, 300);
+        }, duration);
+    }
+
+    // ==================== COUNT-UP ANIMATION ====================
+    function animateCountUp(el, target, duration) {
+        duration = duration || 1200;
+        var numStr = String(target).replace(/[^0-9.]/g, '');
+        var numTarget = parseFloat(numStr);
+        if (isNaN(numTarget)) { el.textContent = target; return; }
+
+        var isDecimal = target.indexOf('.') !== -1;
+        var hasComma = target.indexOf(',') !== -1;
+        var startTime = null;
+
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            var progress = Math.min((timestamp - startTime) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current;
+
+            if (isDecimal) {
+                current = (eased * numTarget).toFixed(1);
+            } else {
+                current = Math.round(eased * numTarget);
+            }
+
+            if (hasComma) {
+                current = Number(current).toLocaleString();
+            }
+
+            el.textContent = current;
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                el.textContent = target;
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    function runDashboardAnimations() {
+        document.querySelectorAll('.status-count').forEach(function(el) {
+            var text = el.textContent.trim();
+            el.textContent = '0';
+            setTimeout(function() {
+                animateCountUp(el, text, 1000);
+            }, 400);
+        });
+    }
+
+    // ==================== SCREEN SWITCHING ====================
     function switchScreen(screenId, navEl) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
         document.getElementById('screen-' + screenId).classList.add('active');
 
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
         if (navEl) {
             navEl.classList.add('active');
         } else {
-            document.querySelector(`[data-screen="${screenId}"]`)?.classList.add('active');
+            var nav = document.querySelector('[data-screen="' + screenId + '"]');
+            if (nav) nav.classList.add('active');
         }
 
-        const titles = {
+        var titles = {
             'dashboard': 'Dashboard',
             'upload': 'Upload Compensation Data',
             'review': 'Data Review & Exceptions',
-            'missing-info': 'Missing Info — Q&A',
+            'missing-info': 'Missing Info \u2014 Q&A',
             'reports': 'Report Generation'
         };
         document.getElementById('page-title').textContent = titles[screenId] || 'Dashboard';
         window.scrollTo(0, 0);
+
+        if (screenId === 'dashboard') runDashboardAnimations();
+        if (screenId === 'review') animateConfidenceRing();
     }
 
-    // Wizard steps
+    // ==================== CONFIDENCE RING ====================
+    function animateConfidenceRing() {
+        document.querySelectorAll('.ring-fill').forEach(function(circle) {
+            var pct = parseFloat(circle.getAttribute('data-percent')) || 0;
+            var r = parseFloat(circle.getAttribute('r'));
+            var circumference = 2 * Math.PI * r;
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = circumference;
+            setTimeout(function() {
+                var offset = circumference - (circumference * pct / 100);
+                circle.style.strokeDashoffset = offset;
+            }, 100);
+        });
+    }
+
+    // ==================== WIZARD ====================
     function wizardNext(step) {
-        document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.wizard-panel').forEach(function(p) { p.classList.remove('active'); });
         document.getElementById('panel' + step).classList.add('active');
 
-        document.querySelectorAll('.wizard-step').forEach((s, i) => {
+        document.querySelectorAll('.wizard-step').forEach(function(s, i) {
             s.classList.toggle('active', i < step);
             s.classList.toggle('completed', i < step - 1);
         });
-        document.querySelectorAll('.wizard-connector').forEach((c, i) => {
+        document.querySelectorAll('.wizard-connector').forEach(function(c, i) {
             c.classList.toggle('active', i < step - 1);
         });
     }
 
-    function wizardBack(step) {
-        wizardNext(step);
+    function wizardBack(step) { wizardNext(step); }
+
+    // ==================== DRAG & DROP ====================
+    var dropzoneEl = document.getElementById('dropzone');
+    if (dropzoneEl) {
+        dropzoneEl.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropzoneEl.classList.add('drag-over');
+        });
+        dropzoneEl.addEventListener('dragleave', function() {
+            dropzoneEl.classList.remove('drag-over');
+        });
+        dropzoneEl.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dropzoneEl.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
     }
 
-    // File handling
+    // ==================== FILE HANDLING ====================
     function handleFiles(files) {
-        // placeholder
+        var fileList = document.getElementById('file-list');
+        var allowed = ['.xlsx', '.xls', '.csv', '.pdf'];
+        var maxSize = 50 * 1024 * 1024;
+
+        Array.from(files).forEach(function(file) {
+            var ext = '.' + file.name.split('.').pop().toLowerCase();
+            if (allowed.indexOf(ext) === -1) {
+                showToast('Unsupported file type: ' + ext, 'error');
+                return;
+            }
+            if (file.size > maxSize) {
+                showToast('File too large: ' + file.name, 'error');
+                return;
+            }
+
+            var iconClass = ext === '.pdf' ? 'pdf' : ext === '.csv' ? 'csv' : 'xlsx';
+            var iconName = ext === '.pdf' ? 'fa-file-pdf' : ext === '.csv' ? 'fa-file-csv' : 'fa-file-excel';
+            var sizeStr = file.size < 1024 * 1024
+                ? (file.size / 1024).toFixed(0) + ' KB'
+                : (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+
+            var item = document.createElement('div');
+            item.className = 'file-item uploading';
+            item.innerHTML =
+                '<div class="file-icon ' + iconClass + '"><i class="fas ' + iconName + '"></i></div>' +
+                '<div class="file-info">' +
+                    '<div class="file-name">' + file.name + '</div>' +
+                    '<div class="file-meta">' + sizeStr + ' &bull; Uploading...</div>' +
+                    '<div class="progress-bar"><div class="progress-fill"></div></div>' +
+                '</div>' +
+                '<div class="file-percent">0%</div>' +
+                '<button class="file-remove" title="Cancel"><i class="fas fa-times"></i></button>';
+
+            item.querySelector('.file-remove').addEventListener('click', function() {
+                item.style.transform = 'translateX(30px)';
+                item.style.opacity = '0';
+                setTimeout(function() { item.remove(); }, 200);
+            });
+            fileList.appendChild(item);
+
+            var progress = 0;
+            var interval = setInterval(function() {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    item.className = 'file-item complete';
+                    item.querySelector('.file-meta').textContent = sizeStr + ' \u2022 Uploaded';
+                    var pb = item.querySelector('.progress-bar');
+                    if (pb) pb.remove();
+                    var fp = item.querySelector('.file-percent');
+                    if (fp) fp.outerHTML = '<div class="file-status"><i class="fas fa-check-circle"></i></div>';
+                    item.querySelector('.file-remove').title = 'Remove';
+                    showToast(file.name + ' uploaded', 'success');
+                } else {
+                    item.querySelector('.progress-fill').style.width = progress + '%';
+                    item.querySelector('.file-percent').textContent = progress + '%';
+                }
+            }, 300);
+        });
     }
 
-    // Submit success
+    // Pre-populated file remove buttons
+    document.querySelectorAll('.file-item .file-remove').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var item = btn.closest('.file-item');
+            var name = item.querySelector('.file-name').textContent;
+            item.style.transform = 'translateX(30px)';
+            item.style.opacity = '0';
+            setTimeout(function() {
+                item.remove();
+                showToast(name + ' removed', 'info');
+            }, 200);
+        });
+    });
+
+    // Auto-complete the uploading PDF after 2.5s (demo polish)
+    setTimeout(function() {
+        var uploading = document.querySelector('.file-item.uploading');
+        if (uploading) {
+            var fill = uploading.querySelector('.progress-fill');
+            if (fill) fill.style.width = '100%';
+            setTimeout(function() {
+                uploading.className = 'file-item complete';
+                var meta = uploading.querySelector('.file-meta');
+                if (meta) meta.textContent = '1.1 MB \u2022 Uploaded';
+                var pb = uploading.querySelector('.progress-bar');
+                if (pb) pb.remove();
+                var fp = uploading.querySelector('.file-percent');
+                if (fp) fp.outerHTML = '<div class="file-status"><i class="fas fa-check-circle"></i></div>';
+                var rb = uploading.querySelector('.file-remove');
+                if (rb) rb.title = 'Remove';
+            }, 600);
+        }
+    }, 2500);
+
+    // ==================== SUBMIT WITH IN-MODAL PROCESSING ====================
     function showSubmitSuccess() {
-        document.getElementById('submit-modal').classList.add('visible');
+        var modal = document.getElementById('submit-modal');
+        var phaseProc = document.getElementById('modal-phase-processing');
+        var phaseSuccess = document.getElementById('modal-phase-success');
+        var fill = document.getElementById('proc-fill');
+        var stageText = document.getElementById('proc-stage-text');
+
+        // Reset to processing phase
+        phaseProc.classList.remove('modal-phase--hidden');
+        phaseSuccess.classList.add('modal-phase--hidden');
+        fill.style.width = '0%';
+        document.querySelectorAll('.proc-file').forEach(function(f) {
+            f.classList.remove('proc-file--active', 'proc-file--done');
+            f.querySelector('.proc-file-status').textContent = 'Waiting...';
+        });
+
+        modal.classList.add('visible');
+
+        var files = ['pf1', 'pf2', 'pf3'];
+        var stages = [
+            { file: 0, pct: '10', status: 'Parsing...', stage: 'Reading compensation_march_2026.xlsx...' },
+            { file: 0, pct: '22', status: 'Validating...', stage: 'Validating schema & formats...' },
+            { file: 0, pct: '33', status: 'Done', stage: 'Mapping columns to standard schema...', done: true },
+            { file: 1, pct: '45', status: 'Parsing...', stage: 'Reading equity_vesting_q1.csv...' },
+            { file: 1, pct: '55', status: 'Validating...', stage: 'Cross-referencing employee IDs...' },
+            { file: 1, pct: '66', status: 'Done', stage: 'Detecting anomalies & duplicates...', done: true },
+            { file: 2, pct: '75', status: 'Extracting...', stage: 'Extracting data from vendor_report.pdf...' },
+            { file: 2, pct: '88', status: 'Validating...', stage: 'Running AI confidence scoring...' },
+            { file: 2, pct: '100', status: 'Done', stage: 'Finalizing batch...', done: true }
+        ];
+
+        var i = 0;
+        var prevFile = -1;
+        var interval = setInterval(function() {
+            if (i >= stages.length) {
+                clearInterval(interval);
+                setTimeout(function() {
+                    phaseProc.classList.add('modal-phase--hidden');
+                    phaseSuccess.classList.remove('modal-phase--hidden');
+                    showToast('Batch #1044 submitted for AI processing', 'success');
+                }, 600);
+                return;
+            }
+
+            var s = stages[i];
+            var fileEl = document.getElementById(files[s.file]);
+
+            if (prevFile !== s.file) {
+                if (prevFile >= 0) {
+                    document.getElementById(files[prevFile]).classList.remove('proc-file--active');
+                }
+                fileEl.classList.add('proc-file--active');
+                prevFile = s.file;
+            }
+
+            fileEl.querySelector('.proc-file-status').textContent = s.status;
+            fill.style.width = s.pct + '%';
+            stageText.textContent = s.stage;
+
+            if (s.done) {
+                fileEl.classList.add('proc-file--done');
+                fileEl.classList.remove('proc-file--active');
+            }
+
+            i++;
+        }, 550);
     }
 
     function closeModal() {
         document.getElementById('submit-modal').classList.remove('visible');
-        // Reset wizard
         wizardNext(1);
         document.getElementById('confirm-check').checked = false;
         document.getElementById('submit-btn').disabled = true;
     }
 
-    // Approval modal
+    // ==================== MARK AS REVIEWED ====================
+    function markAsReviewed() {
+        var overlay = document.getElementById('processing-overlay');
+        document.getElementById('processing-title').textContent = 'Finalizing Review...';
+        document.getElementById('processing-text').textContent = 'Validating all records and generating reports';
+        overlay.classList.add('visible');
+        setTimeout(function() {
+            overlay.classList.remove('visible');
+            showToast('Batch #1041 reviewed \u2014 reports generated', 'success');
+            switchScreen('reports');
+        }, 1800);
+    }
+
+    // ==================== APPROVAL MODAL ====================
     function showApprovalModal() {
-        document.getElementById('approval-modal').classList.add('visible');
+        var overlay = document.getElementById('processing-overlay');
+        document.getElementById('processing-title').textContent = 'Submitting for Approval...';
+        document.getElementById('processing-text').textContent = 'Packaging reports and notifying approver';
+        overlay.classList.add('visible');
+        setTimeout(function() {
+            overlay.classList.remove('visible');
+            document.getElementById('approval-modal').classList.add('visible');
+            showToast('Sent to M. Director for approval', 'success');
+        }, 1500);
     }
 
     function closeApprovalModal() {
         document.getElementById('approval-modal').classList.remove('visible');
     }
 
-    // Toggle exceptions
-    function toggleExceptions(btn, type) {
-        document.querySelectorAll('.card-actions .btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+    // ==================== CLARIFICATION TO HR ====================
+    function showClarificationSummary() {
+        var modal = document.getElementById('clarification-modal');
+        // Reset to summary phase
+        document.getElementById('clar-phase-summary').classList.remove('modal-phase--hidden');
+        document.getElementById('clar-phase-sending').classList.add('modal-phase--hidden');
+        document.getElementById('clar-phase-done').classList.add('modal-phase--hidden');
+        // Reset sending steps
+        document.querySelectorAll('.clar-send-step').forEach(function(s) {
+            s.classList.remove('step-active', 'step-done');
+        });
+        modal.classList.add('visible');
     }
 
-    // Notifications panel
+    function closeClarificationModal() {
+        document.getElementById('clarification-modal').classList.remove('visible');
+    }
+
+    function sendClarificationToHR() {
+        var phaseSummary = document.getElementById('clar-phase-summary');
+        var phaseSending = document.getElementById('clar-phase-sending');
+        var phaseDone = document.getElementById('clar-phase-done');
+
+        phaseSummary.classList.add('modal-phase--hidden');
+        phaseSending.classList.remove('modal-phase--hidden');
+
+        var steps = [
+            document.getElementById('cs1'),
+            document.getElementById('cs2'),
+            document.getElementById('cs3')
+        ];
+
+        var i = 0;
+        steps[0].classList.add('step-active');
+
+        var interval = setInterval(function() {
+            steps[i].classList.remove('step-active');
+            steps[i].classList.add('step-done');
+            i++;
+            if (i >= steps.length) {
+                clearInterval(interval);
+                setTimeout(function() {
+                    phaseSending.classList.add('modal-phase--hidden');
+                    phaseDone.classList.remove('modal-phase--hidden');
+                    showToast('Clarification sent to Acme Corp HR', 'success');
+                }, 500);
+                return;
+            }
+            steps[i].classList.add('step-active');
+        }, 900);
+    }
+
+    // ==================== TOGGLE EXCEPTIONS ====================
+    function toggleExceptions(btn, type) {
+        document.querySelectorAll('.card-actions .btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+
+        if (type === 'exceptions') {
+            document.querySelectorAll('.data-table tbody tr').forEach(function(tr) {
+                if (!tr.classList.contains('row-critical') && !tr.classList.contains('row-warning') &&
+                    !tr.classList.contains('row-info') && !tr.classList.contains('row-critical-detail') &&
+                    !tr.classList.contains('row-warning-detail') && !tr.classList.contains('row-info-detail')) {
+                    tr.style.display = 'none';
+                }
+            });
+            showToast('Showing exceptions only (23 records)', 'info');
+        } else {
+            document.querySelectorAll('.data-table tbody tr').forEach(function(tr) {
+                tr.style.display = '';
+            });
+        }
+    }
+
+    // ==================== NOTIFICATIONS ====================
     function toggleNotifications() {
         document.getElementById('notif-panel').classList.toggle('visible');
     }
 
-    // Resolve exception
+    // ==================== RESOLVE EXCEPTION ====================
     function resolveException(btn) {
-        const row = btn.closest('tr');
-        const prevRow = row.previousElementSibling;
-        if (prevRow) prevRow.classList.remove('row-warning');
-        row.innerHTML = '<td colspan="9"><div class="inline-exception resolved"><i class="fas fa-check-circle"></i> <strong>Resolved</strong> — Accepted by reviewer.</div></td>';
+        var row = btn.closest('tr');
+        var prevRow = row.previousElementSibling;
+        if (prevRow) {
+            prevRow.classList.remove('row-warning');
+            var status = prevRow.querySelector('.row-status');
+            if (status) { status.className = 'row-status ok'; status.innerHTML = '<i class="fas fa-check-circle"></i>'; }
+            var actionBtn = prevRow.querySelector('.btn-warning');
+            if (actionBtn) { actionBtn.className = 'btn btn-xs btn-ghost'; actionBtn.textContent = 'View'; }
+        }
+        row.innerHTML = '<td colspan="9"><div class="inline-exception resolved"><i class="fas fa-check-circle"></i> <strong>Resolved</strong> \u2014 Accepted by reviewer.</div></td>';
+        showToast('Exception resolved \u2014 variance accepted', 'success');
     }
 
-    // Close notification panel on outside click
+    // ==================== Q&A RADIO INTERACTION ====================
+    document.querySelectorAll('.radio-option').forEach(function(option) {
+        option.addEventListener('click', function() {
+            var radio = option.querySelector('input[type="radio"]');
+            if (!radio) return;
+            var name = radio.name;
+            document.querySelectorAll('.radio-option').forEach(function(opt) {
+                if (opt.querySelector('input[name="' + name + '"]')) {
+                    opt.classList.remove('selected');
+                }
+            });
+            option.classList.add('selected');
+            radio.checked = true;
+
+            document.querySelectorAll('.radio-option').forEach(function(opt) {
+                var inp = opt.querySelector('.inline-input');
+                if (inp) {
+                    inp.disabled = !opt.classList.contains('selected');
+                    if (!inp.disabled) inp.focus();
+                }
+            });
+        });
+    });
+
+    // ==================== LIVE SLA COUNTDOWN ====================
+    var slaHours = 17, slaMinutes = 59, slaSeconds = 45;
+    var slaTimerEl = document.querySelector('.sla-timer strong');
+
+    setInterval(function() {
+        slaSeconds--;
+        if (slaSeconds < 0) { slaSeconds = 59; slaMinutes--; }
+        if (slaMinutes < 0) { slaMinutes = 59; slaHours--; }
+        if (slaHours < 0) { slaHours = 0; slaMinutes = 0; slaSeconds = 0; }
+        if (slaTimerEl) {
+            slaTimerEl.textContent = slaHours + ' hrs ' + slaMinutes + ' min';
+        }
+    }, 1000);
+
+    // ==================== MARK ALL NOTIFICATIONS READ ====================
+    var markReadLink = document.querySelector('.notif-header a');
+    if (markReadLink) {
+        markReadLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.notif-item.unread').forEach(function(item) {
+                item.classList.remove('unread');
+            });
+            var dot = document.querySelector('.notif-dot');
+            if (dot) dot.style.display = 'none';
+            showToast('All notifications marked as read', 'info');
+        });
+    }
+
+    // ==================== CLOSE HANDLERS ====================
     document.addEventListener('click', function(e) {
-        const panel = document.getElementById('notif-panel');
+        var panel = document.getElementById('notif-panel');
         if (panel.classList.contains('visible') && !panel.contains(e.target) && !e.target.closest('.top-btn')) {
             panel.classList.remove('visible');
         }
     });
+
+    document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) overlay.classList.remove('visible');
+        });
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.visible').forEach(function(m) { m.classList.remove('visible'); });
+            document.getElementById('notif-panel').classList.remove('visible');
+            document.getElementById('processing-overlay').classList.remove('visible');
+        }
+    });
+
+    // ==================== INITIAL LOAD ====================
+    runDashboardAnimations();
+    animateConfidenceRing();
 </script>
 </body>
 </html>
